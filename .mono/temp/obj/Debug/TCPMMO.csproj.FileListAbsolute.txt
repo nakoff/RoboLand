@@ -1,0 +1,6 @@
+/home/boa/Projects/Godot/TCPMMO/.mono/temp/obj/Debug/TCPMMO.csprojAssemblyReference.cache
+/home/boa/Projects/Godot/TCPMMO/.mono/temp/obj/Debug/TCPMMO.csproj.CoreCompileInputs.cache
+/home/boa/Projects/Godot/TCPMMO/.mono/temp/bin/Debug/TCPMMO.dll
+/home/boa/Projects/Godot/TCPMMO/.mono/temp/bin/Debug/TCPMMO.pdb
+/home/boa/Projects/Godot/TCPMMO/.mono/temp/obj/Debug/TCPMMO.dll
+/home/boa/Projects/Godot/TCPMMO/.mono/temp/obj/Debug/TCPMMO.pdb
