@@ -25,40 +25,25 @@ namespace Network
 		}
 	}
 	
-	public class ClientTCP : Control
+	public static class ClientTCP
 	{
-		private const string authIP = "192.168.56.11";
-		private const int authPort = 10000;
-		public string GameIP {get; private set;}
-		public int GamePort {get; private set;}
-
-		private const int headerSize = 8;
-		private const string  installToken = "8P149bYwHB";
-		private ushort seq = 1;
-
+		public static string GameIP {get; private set;}
+		public static int GamePort {get; private set;}
 		public static string CurToken {get; set;}
 		public static uint UserId {get; set;}
-		
-		private StreamPeerTCP socket;
-		private List<ClientMessage> msgQueue = new List<Network.ClientMessage>();
 
-		public static ClientTCP Instance {get; private set;}
-		
+		private static ushort seq = 1;
+		private static int hdrSize;
+		private static StreamPeerTCP socket;
+		private static List<ClientMessage> msgQueue = new List<Network.ClientMessage>();
 
-		public override void _EnterTree(){
-			Instance = this;
 
-			Core.ResponseMap.SetHandler(NET_CMD.INSTALL, new Game.HandlerInstall());
+		public static void Init(string authToken, int headerSize){
+			CurToken = authToken;
+			hdrSize = headerSize;
 		}
 
-		public override void _Ready(){
-			var timer = new Timer(){OneShot = true, WaitTime = 2};
-			timer.Connect("timeout", this, nameof(Auth));
-			AddChild(timer);
-			timer.Start();
-		}
-
-		public override void _Process(float delta){
+		public static void Update(){
 
 			if (socket == null || socket.IsConnectedToHost() == false){
 				return;
@@ -67,26 +52,26 @@ namespace Network
 			Recv();
 		}
 
-
-
-		public void SendMsg(NET_CMD cmd, JSONNode data){
+		public static void SendMsg(NET_CMD cmd, JSONNode data){
 			data = CreateRequest(cmd, seq, UserId, CurToken, data);
 			Send(cmd, data);
 		}
 
-		private void Auth(){
+		public static string AuthOnServer(string ip, int port){
 			socket = new StreamPeerTCP();
-			var status = socket.ConnectToHost(authIP, authPort);
-			GD.Print("Connect to server: ", status);
+			var status = socket.ConnectToHost(ip, port);
+			if (status != Error.Ok){
+				socket = null;
+				return status.ToString();
+			}
 
-			CurToken = installToken;
 			Send(NET_CMD.INSTALL, SimpleJSON.JSON.Parse("{}"));
+			return null;
 		}
 
-		public string ConnectToGame(string ip, int port){
+		public static string ConnectToGame(string ip, int port){
 			Disconnect();
 
-			GD.Print("CONNECT TO GAME!");
 			var status = socket.ConnectToHost(ip, port);
 			if (status != Error.Ok){
 				socket = null;
@@ -100,7 +85,7 @@ namespace Network
 			return null;
 		}
 
-		private void Disconnect(){
+		private static void Disconnect(){
 			if (socket == null){
 				return;
 			}
@@ -112,23 +97,27 @@ namespace Network
 			socket = null;
 		}
 
-		private void Recv(){
+		private static void Recv(){
 			var ss = socket.GetAvailableBytes();
-			if (ss > headerSize){
+			if (ss > hdrSize){
 				var response = new ServerMessage(socket);
 				GD.Print("recv << cmd:",response.cmd," data:",response.data);
-				var handler = Core.ResponseMap.GetHandler(response.cmd);
+
+				var handler = Core.HandlerManager.GetHandler(response.cmd);
 				if (handler != null){
-					handler.Run(response.data);
+					var err = handler.Run(response.data);
+					if (err != null){
+						GD.PrintErr("Handler error: ", err);
+					}
 				}
 			}
 		}
 
-		private void Send(NET_CMD cmd, JSONNode data){
-			var jData = CreateRequest(cmd, seq, UserId, installToken, data);
+		private static void Send(NET_CMD cmd, JSONNode data){
+			var jData = CreateRequest(cmd, seq, UserId, CurToken, data);
 			var bData = jData.ToString().ToUTF8();
 			
-			var bufferSize = headerSize + bData.Length;
+			var bufferSize = hdrSize + bData.Length;
 			var buffer = new byte[bufferSize];
 
 			uint offset = 0;
@@ -139,22 +128,21 @@ namespace Network
 
 
 			var status = socket.PutData(buffer);
-			GD.Print("Client.Send> status:",status, "  data: ",jData);
+			GD.Print("send >> status:",status, "  data: ",jData);
 			seq++;
 		}
 
-		private JSONNode CreateRequest(NET_CMD cmd, ushort seq, uint userId, string token, JSONNode data){
+		private static JSONNode CreateRequest(NET_CMD cmd, ushort seq, uint userId, string token, JSONNode data){
 			if (data == null){
 				data = SimpleJSON.JSON.Parse("{}");
 			}
 
 			data["user_id"] = userId;
 			data["sig"] = GetSig((ushort)cmd, seq, userId, token);
-			data["pf"] = "WIN";
 			return data;
 		}
 
-		private string GetSig(ushort cmd, ushort seq, uint userId, string token){
+		private static string GetSig(ushort cmd, ushort seq, uint userId, string token){
 			var str = cmd.ToString() + seq.ToString() + userId.ToString() + token.ToString();
 			return str.MD5Text();
 		}

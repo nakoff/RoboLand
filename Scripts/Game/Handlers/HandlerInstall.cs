@@ -24,7 +24,7 @@ namespace Game
             ClientTCP.CurToken = token;
             ClientTCP.UserId = userId;
 
-            var err = ClientTCP.Instance.ConnectToGame(address, port);
+            var err = ClientTCP.ConnectToGame(address, port);
             if (err != null){
                 return err;
             }

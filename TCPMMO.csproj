@@ -61,12 +61,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Core\BaseHandler.cs" />
     <Compile Include="Scripts\Core\DB.cs" />
-    <Compile Include="Scripts\Core\ResponseMap.cs" />
+    <Compile Include="Scripts\Core\HandlerManager.cs" />
+    <Compile Include="Scripts\Game\GameMain.cs" />
     <Compile Include="Scripts\Game\Handlers\HandlerInstall.cs" />
     <Compile Include="Scripts\Network\ClientTCP.cs" />
-    <Compile Include="Scripts\Network\Opcodes.cs" />
+    <Compile Include="Scripts\Opcodes.cs" />
     <Compile Include="Scripts\Network\Utilites.cs" />
-    <Compile Include="Scripts\SimpleJSON.cs" />
+    <Compile Include="Scripts\Thirdparty\SimpleJSON.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
