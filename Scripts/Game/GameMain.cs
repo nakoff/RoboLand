@@ -14,8 +14,7 @@ public class GameMain : Node
 
 
 
-    public override void _Ready()
-    {
+    public override void _Ready(){
         HandlerInit();
         
         ClientTCP.Init(installToken, headerSize);
@@ -25,9 +24,12 @@ public class GameMain : Node
         }
     }
 
-    public override void _Process(float delta)
-    {
+    public override void _Process(float delta){
         ClientTCP.Update();
+    }
+
+    public override void _ExitTree(){
+        ClientTCP.Disconnect();
     }
 
 

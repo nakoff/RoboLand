@@ -85,7 +85,7 @@ namespace Network
 			return null;
 		}
 
-		private static void Disconnect(){
+		public static void Disconnect(){
 			if (socket == null){
 				return;
 			}
