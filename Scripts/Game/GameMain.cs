@@ -1,7 +1,7 @@
 using Godot;
-using System;
 using Core;
 using Network;
+using Dbg = Debug.DbgUtilites;
 
 public class GameMain : Node
 {
@@ -20,8 +20,10 @@ public class GameMain : Node
         ClientTCP.Init(installToken, headerSize);
         var err = ClientTCP.AuthOnServer(authIP, authPort);
         if (err != null){
-            GD.PrintErr("Auth Failed: ", err);
+            Dbg.LogErr("Auth Failed: ", err);
+            return;
         }
+        Dbg.LogSucc("Auth Success");
     }
 
     public override void _Process(float delta){

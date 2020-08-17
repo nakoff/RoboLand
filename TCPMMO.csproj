@@ -62,6 +62,7 @@
     <Compile Include="Scripts\Core\BaseHandler.cs" />
     <Compile Include="Scripts\Core\DB.cs" />
     <Compile Include="Scripts\Core\HandlerManager.cs" />
+    <Compile Include="Scripts\DbgUtilites.cs" />
     <Compile Include="Scripts\Game\GameMain.cs" />
     <Compile Include="Scripts\Game\Handlers\HandlerInstall.cs" />
     <Compile Include="Scripts\Network\ClientTCP.cs" />

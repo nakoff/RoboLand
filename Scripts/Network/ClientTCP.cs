@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using SimpleJSON;
+using Dbg = Debug.DbgUtilites;
 
 namespace Network
 {
@@ -61,7 +62,6 @@ namespace Network
 			socket = new StreamPeerTCP();
 			var status = socket.ConnectToHost(ip, port);
 			if (status != Error.Ok){
-				socket = null;
 				return status.ToString();
 			}
 
@@ -74,7 +74,6 @@ namespace Network
 
 			var status = socket.ConnectToHost(ip, port);
 			if (status != Error.Ok){
-				socket = null;
 				return status.ToString();
 			}
 
@@ -93,8 +92,6 @@ namespace Network
 			if (socket.IsConnectedToHost()){
 				socket.DisconnectFromHost();
 			}
-
-			socket = null;
 		}
 
 		private static void Recv(){
@@ -107,7 +104,7 @@ namespace Network
 				if (handler != null){
 					var err = handler.Run(response.data);
 					if (err != null){
-						GD.PrintErr("Handler error: ", err);
+						Dbg.LogErr("Handler error: ", err);
 					}
 				}
 			}
@@ -128,7 +125,7 @@ namespace Network
 
 
 			var status = socket.PutData(buffer);
-			GD.Print("send >> status:",status, "  data: ",jData);
+			Dbg.Log("send >> status:",status, "  data: ",jData);
 			seq++;
 		}
 
