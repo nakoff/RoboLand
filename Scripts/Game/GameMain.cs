@@ -12,9 +12,10 @@ public class GameMain : Node
     [Export] private string authIP = "192.168.56.11";
 	[Export] private int authPort = 10000;
 
-
+    private EditorInterface rdbViewer;
 
     public override void _Ready(){
+        DB.Init();
         HandlerInit();
         
         ClientTCP.Init(installToken, headerSize);
@@ -37,5 +38,6 @@ public class GameMain : Node
 
     private void HandlerInit(){
         HandlerManager.AddHandler(NET_CMD.INSTALL, new Game.HandlerInstall());
+        HandlerManager.AddHandler(NET_CMD.SYNC, new Game.HandlerSync());
     }
 }

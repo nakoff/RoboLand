@@ -19,6 +19,10 @@ config/name="TCPMMO"
 run/main_scene="res://test.tscn"
 config/icon="res://icon.png"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "RuntimeDB" )
+
 [rendering]
 
 quality/driver/driver_name="GLES2"

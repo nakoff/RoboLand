@@ -29,6 +29,8 @@ namespace Game
                 return err;
             }
 
+            ClientTCP.SendMsg(NET_CMD.SYNC, null);
+
             return null;
         }
     }
