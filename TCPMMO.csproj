@@ -58,6 +58,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="addons\LvlEditor\LvlEditor.cs" />
     <Compile Include="addons\RuntimeDB\RuntimeDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\Core\BaseHandler.cs" />
