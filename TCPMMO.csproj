@@ -65,9 +65,12 @@
     <Compile Include="Scripts\Core\DB.cs" />
     <Compile Include="Scripts\Core\HandlerManager.cs" />
     <Compile Include="Scripts\DbgUtilites.cs" />
+    <Compile Include="Scripts\Core\EntityTypes.cs" />
     <Compile Include="Scripts\Game\GameMain.cs" />
     <Compile Include="Scripts\Game\Handlers\HandlerInstall.cs" />
     <Compile Include="Scripts\Game\Handlers\HandlerSync.cs" />
+    <Compile Include="Scripts\Game\Maps\EntityManager.cs" />
+    <Compile Include="Scripts\Game\Models\Player\PlayerInfo.cs" />
     <Compile Include="Scripts\Network\ClientTCP.cs" />
     <Compile Include="Scripts\Opcodes.cs" />
     <Compile Include="Scripts\Network\Utilites.cs" />

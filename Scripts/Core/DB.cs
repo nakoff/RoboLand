@@ -1,12 +1,11 @@
 using System;
 using SimpleJSON;
-using Plugin;
 
 namespace Core
 {
     public static class DB
     {
-        public static JSONNode _data;
+        private static JSONNode _data;
         private static string idxObj = "objects";
 
 
@@ -15,9 +14,15 @@ namespace Core
         public static event Action<string, string> objectDeleted = delegate { };
 
 
-        public static void Init(){
+        public static string Init(){
             _data = JSON.Parse("{}").AsObject;
             _data[idxObj] = JSON.Parse("{}").AsObject;
+
+            return null;
+        }
+
+        public static JSONNode GetObjects(){
+            return _data[idxObj].AsObject;
         }
 
         public static void ParseServerData(JSONNode data){
@@ -33,13 +38,13 @@ namespace Core
                     var id = obj["id"].Value;
 
                     if (dbObjects[id] == null){
+                        dbObjects[id] = obj;
                         objectAdded(type, id);
                     }
                     else {
+                        dbObjects[id] = obj;
                         objectUpdated(type, id);
                     }
-
-                    dbObjects[id] = obj;
                 }
             }
 

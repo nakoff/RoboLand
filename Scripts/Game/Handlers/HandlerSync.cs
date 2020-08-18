@@ -1,5 +1,4 @@
 using Core;
-using Network;
 using SimpleJSON;
 
 namespace Game
@@ -12,7 +11,7 @@ namespace Game
 
             DB.ParseServerData(responseData);
 
-            Debug.DbgUtilites.Log("Data => ", DB._data);
+            // Debug.DbgUtilites.Log("Data => ", DB.GetObjects());
 
             return null;
         }
