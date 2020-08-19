@@ -19,10 +19,6 @@ config/name="TCPMMO"
 run/main_scene="res://test.tscn"
 config/icon="res://icon.png"
 
-[editor_plugins]
-
-enabled=PoolStringArray( "LvlEditor" )
-
 [rendering]
 
 quality/driver/driver_name="GLES2"
